@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CSVReaderTest {
 
     @Test
-    void readProductFile() throws InvalidFileName {
+    void readValidFile() throws InvalidFileName {
         List<String> actual = CSVReader.readFileData(Constants.PRODUCT_FILE);
         List<String> expected = new ArrayList<String>();
         expected.add("VegemiteScroll,VS5");

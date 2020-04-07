@@ -49,10 +49,15 @@ public class InventoryService {
     private void createPacket(String packetInfo) {
         String[] packetDetails = packetInfo.split(Constants.CSV_SPLIT);
         PacketPrice packetPrice = new PacketPrice(Integer.parseInt(packetDetails[1]), Double.parseDouble(packetDetails[2]));
-        availableProducts.get(packetDetails[0]).addPacket(packetPrice);
+        if (availableProducts.containsKey(packetDetails[0]))
+            availableProducts.get(packetDetails[0]).addPacket(packetPrice);
     }
 
     public Product getProduct(String productCode) {
         return availableProducts.get(productCode);
+    }
+
+    public boolean isValidProduct(String productCode) {
+        return availableProducts.containsKey(productCode);
     }
 }
