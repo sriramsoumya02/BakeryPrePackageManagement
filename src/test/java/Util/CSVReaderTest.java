@@ -18,6 +18,11 @@ public class CSVReaderTest {
         expected.add("VegemiteScroll,VS5");
         expected.add("BlueberryMuffin,MB11");
         expected.add("Croissant,CF");
+        expected.add("GarlicBread,GB");
+        expected.add("ChocolateCake,CC");
+        expected.add("BreadBun,BB");
+        expected.add("RuskToast,RT");
+        expected.add("SandwichBread,SB");
         assertTrue(expected.equals(actual));
     }
 
