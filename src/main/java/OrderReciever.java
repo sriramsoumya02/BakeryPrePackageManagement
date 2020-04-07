@@ -1,4 +1,5 @@
-import Bakery.OrderFullfillment;
+import Bakery.OrderFulfillment;
+import Util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,15 +8,15 @@ import java.util.Scanner;
 public class OrderReciever {
 
     private static void processOrder(List<String> userinput) {
-        OrderFullfillment order = new OrderFullfillment(userinput);
+        OrderFulfillment order = new OrderFulfillment(userinput);
         String bill = order.processOrderByProduct();
         System.out.println(bill);
     }
 
     public static void main(String[] args) {
-        System.out.println("Please Place your Order below like quantiry,productcode eg:10,VS5 :");
+        System.out.println(Constants.USER_INPUT_LABEL);
         Scanner consoleInput = new Scanner(System.in);
-        List<String> userinput = new ArrayList<String>();
+        List<String> userInput = new ArrayList<>();
         String line;
 
         while (consoleInput.hasNextLine()) {
@@ -23,8 +24,8 @@ public class OrderReciever {
             if (line.isEmpty()) {
                 break;
             }
-            userinput.add(line);
+            userInput.add(line);
         }
-        processOrder(userinput);
+        processOrder(userInput);
     }
 }

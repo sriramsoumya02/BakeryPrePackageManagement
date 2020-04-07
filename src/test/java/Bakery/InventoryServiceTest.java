@@ -17,7 +17,7 @@ public class InventoryServiceTest {
         expectedProduct.addPacket(new PacketPrice(5, 9.95));
         expectedProduct.addPacket(new PacketPrice(9, 16.95));
         assertAll(() -> assertEquals(expectedProduct.getProductName(), inventoryService.getProduct("CF").getProductName()),
-                () -> assertEquals(expectedProduct.sortedPacketSizelist(), inventoryService.getProduct("CF").sortedPacketSizelist()),
-                () -> assertEquals(expectedProduct.getPriceofPacket(5), inventoryService.getProduct("CF").getPriceofPacket(5)));
+                () -> assertEquals(expectedProduct.sortedPacketSizeList(), inventoryService.getProduct("CF").sortedPacketSizeList()),
+                () -> assertEquals(expectedProduct.getPriceOfPacket(5), inventoryService.getProduct("CF").getPriceOfPacket(5)));
     }
 }

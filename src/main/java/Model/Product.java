@@ -37,21 +37,21 @@ public class Product {
         packets.put(packet.getNoItems(), packet);
     }
 
-    public boolean removePacket(int packsize) {
-        if (packets.containsKey(packsize)) {
-            packets.remove(packsize);
+    public boolean removePacket(int packSize) {
+        if (packets.containsKey(packSize)) {
+            packets.remove(packSize);
             return true;
         }
         return false;
     }
 
-    public List<Integer> sortedPacketSizelist() {
+    public List<Integer> sortedPacketSizeList() {
         return packets.keySet().stream().sorted(Collections.reverseOrder()).collect(Collectors.toList());
     }
 
-    public double getPriceofPacket(int packsize) {
-        if (packets.containsKey(packsize))
-            return packets.get(packsize).getCost();
+    public double getPriceOfPacket(int packSize) {
+        if (packets.containsKey(packSize))
+            return packets.get(packSize).getCost();
         else
             return 0.0d;
     }

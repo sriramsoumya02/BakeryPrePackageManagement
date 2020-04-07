@@ -19,11 +19,11 @@ public class ProductTest {
 
     @Test
     public void validateProductWhenNoPacketsAvailable() {
-        List<Integer> packets = product.sortedPacketSizelist();
+        List<Integer> packets = product.sortedPacketSizeList();
         assertAll(() -> assertEquals("VegemiteScroll", product.getProductName()),
                 () -> assertEquals("VS5", product.getProductCode()),
                 () -> assertTrue(packets.isEmpty()),
-                () -> assertEquals(0.0, product.getPriceofPacket(10)),
+                () -> assertEquals(0.0, product.getPriceOfPacket(10)),
                 () -> assertFalse(product.removePacket(10))
         );
 
@@ -45,12 +45,12 @@ public class ProductTest {
         product.addPacket(new PacketPrice(8, 24.95));
         List<Integer> expectedPacketlist = new ArrayList<>(Arrays.asList(8, 5, 2));
         List<Integer> expectedPacketlist1 = new ArrayList<>(Arrays.asList(8, 2));
-        assertAll(() -> assertEquals(9.95, product.getPriceofPacket(2)),
-                () -> assertEquals(expectedPacketlist, product.sortedPacketSizelist()),
+        assertAll(() -> assertEquals(9.95, product.getPriceOfPacket(2)),
+                () -> assertEquals(expectedPacketlist, product.sortedPacketSizeList()),
                 () -> assertTrue(product.removePacket(5)),
-                () -> assertEquals(expectedPacketlist1, product.sortedPacketSizelist()),
+                () -> assertEquals(expectedPacketlist1, product.sortedPacketSizeList()),
                 () -> product.addPacket(new PacketPrice(5, 16.95)),
-                () -> assertEquals(expectedPacketlist, product.sortedPacketSizelist())
+                () -> assertEquals(expectedPacketlist, product.sortedPacketSizeList())
         );
 
     }

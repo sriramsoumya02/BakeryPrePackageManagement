@@ -1,6 +1,6 @@
 package Model;
 
-public class PacketPrice implements Comparable<PacketPrice> {
+public class PacketPrice {
     private int noItems;
     private double cost;
 
@@ -25,9 +25,4 @@ public class PacketPrice implements Comparable<PacketPrice> {
         this.cost = cost;
     }
 
-    //todo i have to remove if it is not needed
-    @Override
-    public int compareTo(PacketPrice o) {
-        return Integer.compare(this.noItems, o.getNoItems());
-    }
 }

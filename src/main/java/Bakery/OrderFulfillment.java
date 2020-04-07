@@ -9,28 +9,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class OrderFullfillment {
+public class OrderFulfillment {
     private InventoryService inventoryService;
-    private List<String> userInpt;
+    private List<String> userInput;
 
 
-    public OrderFullfillment(List<String> userInpt) {
+    public OrderFulfillment(List<String> userInput) {
         inventoryService = InventoryService.getInstance();
-        this.userInpt = userInpt;
+        this.userInput = userInput;
     }
 
     public String processOrderByProduct() {
-        StringBuffer bill = new StringBuffer();
-        for (String s : userInpt) {
+        StringBuilder bill = new StringBuilder();
+        for (String s : userInput) {
             String[] productDetails = s.split(Constants.CSV_SPLIT);
             if (productDetails.length >= 2 && Validations.isParsableInteger(productDetails[0]) && (Integer.parseInt(productDetails[0]) > 0) && inventoryService.isValidProduct(productDetails[1])) {
                 int quantity = Integer.parseInt(productDetails[0]);
                 String productCode = productDetails[1];
                 Product product = inventoryService.getProduct(productCode);
-                List<Integer> packetslist = product.sortedPacketSizelist();
-                if (packetslist.size() > 0) {
-                    Map<Integer, Integer> eachPacketCount = getOrderresult(packetslist, quantity);
-                    bill.append(printBill(eachPacketCount, product, quantity));
+                List<Integer> packetsList = product.sortedPacketSizeList();
+                if (packetsList.size() > 0) {
+                    Map<Integer, Integer> productPacketCount = getProductPacketCombination(packetsList, quantity);
+                    bill.append(printBill(productPacketCount, product, quantity));
                 } else {
                     bill.append(Constants.NEW_LINE).append(productCode).append(Constants.SPACE).append(Constants.COLON).append(Constants.SPACE).append(Constants.PRODUCTS_NOT_AVAILABLE);
                 }
@@ -41,57 +41,55 @@ public class OrderFullfillment {
         return bill.toString();
     }
 
-    private double getTotalCountByProduct(Map<Integer, Integer> eachPacketCount, Product product) {
+    private double getTotalAmountByProduct(Map<Integer, Integer> productPacketCount, Product product) {
         double totalAmount = 0;
-        for (Map.Entry<Integer, Integer> entry : eachPacketCount.entrySet()) {
+        for (Map.Entry<Integer, Integer> entry : productPacketCount.entrySet()) {
 
-            totalAmount = totalAmount + entry.getValue() * product.getPriceofPacket(entry.getKey());
+            totalAmount = totalAmount + entry.getValue() * product.getPriceOfPacket(entry.getKey());
         }
         totalAmount = Math.round(totalAmount * 100.0) / 100.0;
         return totalAmount;
     }
 
-    private String printBill(Map<Integer, Integer> eachPacketCount, Product product, int quantity) {
-        StringBuffer bill = new StringBuffer();
+    private String printBill(Map<Integer, Integer> productPacketCount, Product product, int quantity) {
+        StringBuilder bill = new StringBuilder();
         String productCode = product.getProductCode();
-        if (eachPacketCount.containsKey(0))
+        if (productPacketCount.containsKey(0))
             bill.append(Constants.NEW_LINE).append(productCode).append(Constants.SPACE).append(Constants.COLON).append(Constants.SPACE).append(Constants.INVALID_QUANTITY);
         else {
-            double totalAmount = getTotalCountByProduct(eachPacketCount, product);
-            bill.append(quantity).append(productCode).append(Constants.SPACE).append(Constants.CURRENCY).append(totalAmount);
-            eachPacketCount.forEach((k, v) -> {
-                bill.append(Constants.NEW_LINE).append(Constants.TAB).append(v).append(Constants.SPACE).append(Constants.CROSS).append(k).append(Constants.CURRENCY).append(product.getPriceofPacket(k));
-            });
-            bill.append(Constants.NEW_LINE);
+            double totalAmountByProduct = getTotalAmountByProduct(productPacketCount, product);
+            bill.append(Constants.NEW_LINE).append(quantity).append(Constants.SPACE).append(productCode).append(Constants.SPACE).append(Constants.CURRENCY).append(totalAmountByProduct);
+            productPacketCount.forEach((k, v) -> bill.append(Constants.NEW_LINE).append(Constants.TAB).append(v).append(Constants.SPACE).append(Constants.CROSS).append(Constants.SPACE).append(k).append(Constants.SPACE).append(Constants.CURRENCY).append(product.getPriceOfPacket(k)));
+
         }
         return bill.toString();
     }
 
-    private Map<Integer, Integer> getOrderresult(List<Integer> packets, int quantity) {
-        Prepacking processor = new Prepacking(packets);
-        int remainingQuantity = processor.determinePackageCount(quantity, 0);
-        Map<Integer, Integer> orderResult = processor.getpacketsCount();
+    private Map<Integer, Integer> getProductPacketCombination(List<Integer> packets, int quantity) {
+        Prepackaging processor = new Prepackaging(packets);
+        int remainingQuantity = processor.determinePacketsCount(quantity, 0);
+        Map<Integer, Integer> productPacketCombination = processor.getPacketsCount();
         if (remainingQuantity > 0) {
-            orderResult.clear();
-            orderResult.put(0, 0);
+            productPacketCombination.clear();
+            productPacketCombination.put(0, 0);
         }
-        return orderResult;
+        return productPacketCombination;
     }
 
-    private class Prepacking {
+    private static class Prepackaging {
         private Map<Integer, Integer> packetsCount =
-                new TreeMap<Integer, Integer>(Collections.reverseOrder());
+                new TreeMap<>(Collections.reverseOrder());
         List<Integer> packets;
 
-        public Prepacking(List<Integer> packets) {
+        public Prepackaging(List<Integer> packets) {
             this.packets = packets;
         }
 
-        public Map<Integer, Integer> getpacketsCount() {
+        public Map<Integer, Integer> getPacketsCount() {
             return packetsCount;
         }
 
-        public int determinePackageCount(int quantity, int idx) {
+        public int determinePacketsCount(int quantity, int idx) {
             int currentPacket = packets.get(idx);
             int noOfPackets = quantity / currentPacket;
             int remainingQuantity = quantity % currentPacket;
@@ -104,7 +102,7 @@ public class OrderFullfillment {
                 if (idx + 1 < size) {
                     idx++;
                     quantity = remainingQuantity;
-                    remainingQuantity = determinePackageCount(quantity, idx);
+                    remainingQuantity = determinePacketsCount(quantity, idx);
                     if (remainingQuantity > 0) {
                         quantity = remainingQuantity + currentPacket;
                         int packetCount = packetsCount.get(currentPacket);
@@ -114,18 +112,14 @@ public class OrderFullfillment {
                             packetsCount.remove(currentPacket);
                         }
 
-                        remainingQuantity = determinePackageCount(quantity, idx);
-                        return remainingQuantity;
-                    } else {
-                        return remainingQuantity;
+                        remainingQuantity = determinePacketsCount(quantity, idx);
                     }
-                } else {
-                    return remainingQuantity;
                 }
+                return remainingQuantity;
             } else if (noOfPackets == 0) {
                 if (idx + 1 < size) {
                     idx++;
-                    remainingQuantity = determinePackageCount(quantity, idx);
+                    remainingQuantity = determinePacketsCount(quantity, idx);
                     return remainingQuantity;
                 } else {
                     return remainingQuantity;

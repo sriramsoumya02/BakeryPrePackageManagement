@@ -10,17 +10,17 @@ import java.util.List;
 
 public class CSVReader {
 
-    public static List<String> readFileData(String filename) throws InvalidFileName {
-        List<String> filedata = new ArrayList<String>();
+    public static List<String> readFileData(String fileName) throws InvalidFileName {
+        List<String> fileData = new ArrayList<String>();
         String line;
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new FileReader(CSVReader.class.getClassLoader().getResource(filename).getPath()));
+            br = new BufferedReader(new FileReader(CSVReader.class.getClassLoader().getResource(fileName).getPath()));
             while ((line = br.readLine()) != null) {
-                filedata.add(line);
+                fileData.add(line);
             }
         } catch (Exception e) {
-            throw new InvalidFileName(Constants.INVALID_FILE_NAME + " " + filename);
+            throw new InvalidFileName(Constants.INVALID_FILE_NAME + " " + fileName);
         } finally {
             try {
                 if (br != null)
@@ -30,6 +30,6 @@ public class CSVReader {
             }
 
         }
-        return filedata;
+        return fileData;
     }
 }

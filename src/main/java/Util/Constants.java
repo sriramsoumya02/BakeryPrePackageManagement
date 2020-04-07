@@ -5,11 +5,10 @@ public class Constants {
     public static final String PACKET_FILE = "packet.csv";
     public static final String CSV_SPLIT = ",";
     public static final String INVALID_FILE_NAME = "Incorrect filename : ";
-    public static final String USER_INPUT_FILE = "userinput.csv";
-    public static final String VALID_PRODUCT_DETAILS = "Please enter valid productcode and quantity";
-    public static final String PRODUCTS_NOT_AVAILABLE = "This Products is not available";
-    public static final String INVALID_QUANTITY = "Unable to Process this quantity with available packets";
-    public static final String NEXT_BEST_QUANTITY = "Next available quantity";
+    public static final String USER_INPUT_LABEL = "Please place your order in the following format Quantity,Productcode eg:10,VS5 :";
+    public static final String VALID_PRODUCT_DETAILS = "Please enter valid Productcode and Quantity";
+    public static final String PRODUCTS_NOT_AVAILABLE = "This product is not available";
+    public static final String INVALID_QUANTITY = "Unable to process this quantity with available packet sizes";
     public static final String NEW_LINE = "\n";
     public static final String SPACE = " ";
     public static final String COLON = ":";
