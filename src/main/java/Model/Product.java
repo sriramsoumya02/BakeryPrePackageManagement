@@ -6,6 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Product class contains product related information
+ *
+ * @author Soumya Sriram
+ */
 public class Product {
     private String productName;
     private String productCode;

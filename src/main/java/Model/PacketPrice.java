@@ -1,5 +1,10 @@
 package Model;
 
+/**
+ * PacketPrice class contains packet related information
+ *
+ * @author Soumya Sriram
+ */
 public class PacketPrice {
     private int noItems;
     private double cost;

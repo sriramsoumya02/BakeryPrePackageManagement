@@ -8,6 +8,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * CSVReader class works for CSV File related operations
+ *
+ * @author Soumya Sriram
+ */
 public class CSVReader {
 
     public static List<String> readFileData(String fileName) throws InvalidFileName {

@@ -1,5 +1,10 @@
 package Util;
 
+/**
+ * Constants class contains all constant values related to application
+ *
+ * @author Soumya Sriram
+ */
 public class Constants {
     public static final String PRODUCT_FILE = "product.csv";
     public static final String PACKET_FILE = "packet.csv";

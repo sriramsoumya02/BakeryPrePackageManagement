@@ -1,5 +1,10 @@
 package Util;
 
+/**
+ * Validations class contains all utility methods used in validations
+ *
+ * @author Soumya Sriram
+ */
 public class Validations {
     public static boolean isParsableInteger(String input) {
         try {
